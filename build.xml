@@ -1,0 +1,42 @@
+<project name="CommunityPlugin" default="dist" basedir=".">
+	<property name="bukkit" value="../../bukkit"/>
+	
+	<property name="pluginname" value="Community"/>
+	<property name="bukkit.jar" location="${bukkit}/bukkit-0.0.1-SNAPSHOT.jar"/>
+	<property name="craftbukkit.jar" location="${bukkit}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
+	<property name="plugins" location="${bukkit}/plugins/"/>
+
+	<property name="src" location="src"/>
+	<property name="obj" location="obj"/>
+	<property name="dist" location="dist"/>
+	
+	<target name="init">
+		<mkdir dir="${obj}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${obj}" includeantruntime="false" debug="true">
+			<classpath>
+				<pathelement location="${bukkit.jar}"/>
+				<pathelement location="${craftbukkit.jar}"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile">
+		<mkdir dir="${dist}"/>
+		<jar jarfile="${dist}/${pluginname}.jar">
+			<fileset dir="${obj}"/>
+			<fileset file="${src}/plugin.yml"/>
+		</jar>
+	</target>
+
+	<target name="deploy" depends="dist">
+		<copy file="${dist}/${pluginname}.jar" todir="${plugins}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${obj}"/>
+		<delete dir="${dist}"/>
+	</target>
+</project>
